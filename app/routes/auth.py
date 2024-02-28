@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify, Blueprint
-from repositories import AuthRepository
-from services import AuthService
+from ..repositories.auth_repository import AuthRepository
+from ..services.auth_service import AuthService
 from flask_bcrypt import Bcrypt
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '9ba263503b01ce2ef81f6641f504b45333aa0662183d0184db79d9e92ccef620'
-bcrypt = Bcrypt(app)
-auth_service = AuthService(app.config['SECRET_KEY'])
+# app = Flask(__name__)
+# app.config['SECRET_KEY'] = '9ba263503b01ce2ef81f6641f504b45333aa0662183d0184db79d9e92ccef620'
+# bcrypt = Bcrypt(app)
+# auth_service = AuthService(app.config['SECRET_KEY'])
+auth_service = AuthService('9ba263503b01ce2ef81f6641f504b45333aa0662183d0184db79d9e92ccef620')
 auth_repository = AuthRepository()
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
@@ -34,11 +35,11 @@ def login():
 @auth_blueprint.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    name = data.get('name')
-    email = data.get('email')
-    password = data.get('password')
-    matricula = data.get('matricula')
-    tipo_permissao = data.get('tipo_permissao')
+    name = data['name']
+    email = data['email']
+    password = data['password']
+    matricula = data['matricula']
+    tipo_permissao = data['tipo_permissao']
 
     if not all([name, email, password, matricula, tipo_permissao]):
         return jsonify({'message': 'All fields are required'}), 400
@@ -48,6 +49,8 @@ def register():
         return jsonify({'message': error}), 400
 
     return jsonify({'user': user, 'message': 'User created successfully'}), 201
+
+
 
 
 
