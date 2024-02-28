@@ -15,28 +15,41 @@ class AuthRepository():
     # def user_exists(self, username):
     #     return username in self.users
         
-    def user_exists(self, username):
+    def user_exists(self, username: str):
         try:
             with db.connect("user_exists") as conn:
                 with conn.cursor() as cursor:
                     query = "SELECT nome FROM usuario_teste WHERE nome = %s"
                     cursor.execute(query, (username,))
                     user = cursor.fetchone()
-                    return user[1] if user else None
+                    return user[0] if user else None
         except psycopg2.Error as e:
             logging.error(f"Erro ao verificar se o usuário existe: {e}")
             return None
 
-    def get_user_password(self, username):
-        if self.user_exists(username):
-            return self.users[username]['password']
-        return None
+    # def get_user_password(self, username):
+    #     if self.user_exists(username):
+    #         return self.users[username]['password']
+    #     return None
     
     # def get_user_by_email(self, email):
     #     for user in self.users.values():
     #         if user['email'] == email:
     #             return user
     #     return None
+
+
+    def get_user_password(self, username: str):
+        try:
+            with db.connect("get_user_password") as conn:
+                with conn.cursor() as cursor:
+                    query = "SELECT senha FROM usuario_teste WHERE nome = %s"
+                    cursor.execute(query, (username,))
+                    user = cursor.fetchone()
+                    return user[0] if user else None
+        except psycopg2.Error as e:
+            logging.error(f"Erro ao obter senha do usuário: {e}")
+            return None
 
     def get_user_by_email(self, email: str):
         try:
