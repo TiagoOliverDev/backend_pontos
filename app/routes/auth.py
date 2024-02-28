@@ -31,3 +31,23 @@ def login():
     return jsonify({'token': token.decode('utf-8')}), 200
 
 
+@auth_blueprint.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    name = data.get('name')
+    email = data.get('email')
+    password = data.get('password')
+    matricula = data.get('matricula')
+    tipo_permissao = data.get('tipo_permissao')
+
+    if not all([name, email, password, matricula, tipo_permissao]):
+        return jsonify({'message': 'All fields are required'}), 400
+
+    user, error = auth_service.register_user(name, email, password, matricula, tipo_permissao)
+    if error:
+        return jsonify({'message': error}), 400
+
+    return jsonify({'user': user, 'message': 'User created successfully'}), 201
+
+
+

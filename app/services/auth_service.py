@@ -1,6 +1,9 @@
 # service.py
 from passlib.hash import bcrypt
+from repositories import AuthRepository
 import jwt
+
+auth_repository = AuthRepository()
 
 class AuthService:
     def __init__(self, secret_key):
@@ -22,3 +25,10 @@ class AuthService:
             return 'Token expired. Please log in again.'
         except jwt.InvalidTokenError:
             return 'Invalid token. Please log in again.'
+        
+    def register_user(self, name, email, password, matricula, tipo_permissao):
+        if self.auth_repository.user_exists(email):
+            return None, 'Email already exists'
+
+        user = self.auth_repository.create_user(name, email, password, matricula, tipo_permissao)
+        return user, None
