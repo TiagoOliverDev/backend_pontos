@@ -28,15 +28,19 @@ def list_all_collaborators(current_user):
 def register_collaborator(current_user):
     data = request.get_json()
     name = data['name']
+    email = data['email']
+    password = data['password']
+    matricula = data['matricula']
+    tipo_permissao = data['tipo_permissao']
 
-    if not all([name]):
-        return jsonify({'message': 'Field is required'}), 400
+    if not all([name, email, password, matricula, tipo_permissao]):
+        return jsonify({'message': 'All fields are required'}), 400
 
-    collaborator, error = collaborator_service.register_collaborator(name=name)
+    user, error = collaborator_service.register_collaborator(name, email, password, matricula, tipo_permissao)
     if error:
         return jsonify({'message': error}), 400
 
-    return jsonify({'collaborator': collaborator, 'message': 'collaborator created successfully'}), 201
+    return jsonify({'collaborator': user, 'message': 'Collaborator created successfully'}), 201
 
 
 @collaborator_blueprint.route('/collaborator/<int:id>', methods=['GET', 'PUT', 'DELETE'])
@@ -53,16 +57,13 @@ def collaborator(current_user, id):
 
     elif request.method == 'PUT':
         data = request.get_json()
-        if 'name' not in data:
-            return jsonify({'message': 'Name is required'}), 400
 
-        name = data['name']
-
-        updated_collaborator, error = collaborator_service.update_collaborator(id=id, name=name)
+        updated_collaborator, error = collaborator_service.collaborator_update(id=id, **data)
+        
         if error:
             return jsonify({'message': error}), 500
         if not updated_collaborator:
-            return jsonify({'message': 'collaborator not found'}), 404
+            return jsonify({'message': 'Collaborator not found'}), 404
         
         return jsonify({'collaborator': updated_collaborator}), 200
 
@@ -74,3 +75,5 @@ def collaborator(current_user, id):
             return jsonify({'message': 'collaborator not found'}), 404
         
         return jsonify({'message': 'collaborator deleted successfully'}), 200
+    
+
