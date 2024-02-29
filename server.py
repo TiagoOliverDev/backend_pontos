@@ -1,6 +1,6 @@
-from flask import Flask, Blueprint
+from flask import Flask
 from flask_bcrypt import Bcrypt
-from app.routes import auth_blueprint
+from app.routes import auth_blueprint, sector_blueprint
 import os
 
 app = Flask(__name__)
@@ -15,6 +15,7 @@ else:
 
 bcrypt = Bcrypt(app)
 app.register_blueprint(auth_blueprint)
+app.register_blueprint(sector_blueprint)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=1010, debug=app.config['DEBUG'])
