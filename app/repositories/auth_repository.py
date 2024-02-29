@@ -19,7 +19,7 @@ class AuthRepository():
         try:
             with db.connect("user_exists") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT nome FROM usuario_teste WHERE nome = %s"
+                    query = "SELECT nome FROM usuario WHERE nome = %s"
                     cursor.execute(query, (username,))
                     user = cursor.fetchone()
                     return user[0] if user else None
@@ -43,7 +43,7 @@ class AuthRepository():
         try:
             with db.connect("get_user_password") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT senha FROM usuario_teste WHERE nome = %s"
+                    query = "SELECT senha FROM usuario WHERE nome = %s"
                     cursor.execute(query, (username,))
                     user = cursor.fetchone()
                     return user[0] if user else None
@@ -55,7 +55,7 @@ class AuthRepository():
         try:
             with db.connect("get_user_by_email") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT * FROM usuario_teste WHERE email = %s"
+                    query = "SELECT * FROM usuario WHERE email = %s"
                     cursor.execute(query, (email,))
                     user = cursor.fetchone()
                     if user:
@@ -77,7 +77,7 @@ class AuthRepository():
                 with conn.cursor() as cursor:
                     # Consulta SQL para inserir um novo usuário
                     sql = """
-                        INSERT INTO usuario_teste (nome, email, senha, matricula, tipo_permissao)
+                        INSERT INTO usuario (nome, email, senha, matricula, tipo_permissao)
                         VALUES (%s, %s, %s, %s, %s)
                         RETURNING *
                     """
