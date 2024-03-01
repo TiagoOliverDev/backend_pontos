@@ -65,25 +65,28 @@ I used the following technologies:
 
 - To install all the app dependencies on the command line run
 - ```
+ steps...
+
+  ``` 
+## Step 1: 
+
  python -m venv nome_da_env
 
  nome_da_env/Scripts/activate
 
  pip install -r requirements.txt
 
-  ``` 
 
 ## Step 2: 
 
-After that, go to .env and set the bank credentials and choose to run production or development
+After that, go to .env and set the DB credentials and choose to run production or development
 
 
 ## Step 3: Run the project
 
 Open folder project and open a terminal and run the following command:
 
-```bash
-python server.py
+python server.py or python3 server,py
 
 
 
