@@ -27,12 +27,12 @@ Register points
 
 # Features 
 
-- Cadastro de usuario admin
-- Cadastro e listagem de setores
-- Cadastro e listagem de colaboradores
-- Opções para bater ponto em diversos horários (entrada, almoço, retorno e fim de expediente)
-- Histórico (em desenvolviemnto)
-- Dashboard (em desenvolviemnto)
+- Admin user registration
+- Registration and listing of sectors
+- Registration and listing of collaborators
+- Options to clock in at different times (entry, lunch, return and end of work)
+- History (under development)
+- Dashboard (under development)
 
 <hr/>
 
