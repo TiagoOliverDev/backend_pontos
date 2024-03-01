@@ -1,8 +1,14 @@
-<h1 align="center">Points manager/h1>
+<h1 align="center">Points manager</h1>
+
 Backend for points system
+
 <hr/>
 
+Register
+![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/register.png)
 
+Login
+![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/login.png)
 
 
 <hr/>
