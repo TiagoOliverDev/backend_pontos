@@ -38,6 +38,19 @@ class AuthRepository():
         except psycopg2.Error as e:
             logging.error(f"Erro ao verificar se o usuário existe: {e}")
             return None
+        
+            
+    def get_id_user(self, email: str):
+        try:
+            with db.connect("get_id_user") as conn:
+                with conn.cursor() as cursor:
+                    query = "SELECT id_usuario FROM usuario WHERE email = %s"
+                    cursor.execute(query, (email,))
+                    user = cursor.fetchone()
+                    return user[0] if user else None
+        except psycopg2.Error as e:
+            logging.error(f"Erro ao verificar se o usuário existe: {e}")
+            return None
 
     # def get_user_password(self, username):
     #     if self.user_exists(username):
