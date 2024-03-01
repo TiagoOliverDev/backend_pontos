@@ -92,9 +92,34 @@ class CollaboratorRepository():
         try:
             with db.connect("list_all_collaborators") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT * FROM usuario WHERE tipo_permissao = 2"
+                    query = """
+                        SELECT 
+                            u.id_usuario, 
+                            u.nome, 
+                            u.email, 
+                            u.matricula,
+                            (SELECT t.tipo FROM turno t WHERE t.id_turno = ut.id_turno) as tipo_turno,
+                            (SELECT s.nome FROM setor s WHERE s.id_setor = us.id_setor) as nome_setor
+                        FROM 
+                            usuario u
+                        LEFT JOIN 
+                            usuario_turno ut ON u.id_usuario = ut.id_usuario
+                        LEFT JOIN 
+                            usuario_setor us ON u.id_usuario = us.id_usuario;
+                    """
                     cursor.execute(query)
-                    collaborators = cursor.fetchall()
+                    collaborator_tuples = cursor.fetchall()
+                    collaborators = [
+                        {
+                            "id": collaborator[0],
+                            "nomeCompleto": collaborator[1],
+                            "email": collaborator[2],
+                            "matricula": collaborator[3],
+                            "turno": collaborator[4],
+                            "setor": collaborator[5]
+                        }
+                        for collaborator in collaborator_tuples if collaborator
+                    ]
                     return collaborators
         except psycopg2.Error as e:
             logging.error(f"Erro ao listar os colaboradores: {e}")
@@ -104,12 +129,39 @@ class CollaboratorRepository():
         try:
             with db.connect("list_collaborator_by_id") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT * FROM usuario WHERE id_usuario = %s"
-                    cursor.execute(query, (id,))
-                    collaborator = cursor.fetchone()
-                    return collaborator, None
+                    query = """
+                        SELECT 
+                            u.id_usuario, 
+                            u.nome, 
+                            u.email, 
+                            u.matricula,
+                            (SELECT t.tipo FROM turno t WHERE t.id_turno = ut.id_turno) as tipo_turno,
+                            (SELECT s.nome FROM setor s WHERE s.id_setor = us.id_setor) as nome_setor
+                        FROM 
+                            usuario u
+                        INNER JOIN 
+                            usuario_turno ut ON u.id_usuario = ut.id_usuario AND ut.id_usuario = %s
+                        INNER JOIN 
+                            usuario_setor us ON u.id_usuario = us.id_usuario AND us.id_usuario = %s
+                    """
+                    cursor.execute(query, (id,id))
+                    collaborator_tuples = cursor.fetchall()
+                    collaborators = [
+                        {
+                            "id": collaborator[0],
+                            "nomeCompleto": collaborator[1],
+                            "email": collaborator[2],
+                            "matricula": collaborator[3],
+                            "turno": collaborator[4],
+                            "setor": collaborator[5]
+                        }
+                        for collaborator in collaborator_tuples if collaborator
+                    ]
+                    return collaborators
         except psycopg2.Error as e:
             logging.error(f"Error listing collaborator by id: {e}")
             return None, 'Error listing collaborator by id. Please try again later.'
         
+
+
 

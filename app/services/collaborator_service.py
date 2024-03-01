@@ -13,7 +13,7 @@ class CollaboratorService:
             collaborators = collaborator_repository.list_all_collaborators()
             if collaborators is None:
                 return {'message': 'Error fetching collaborators'}, 500
-            return {'collaborators': collaborators}, 200
+            return collaborators, 200
         except Exception as e:
             logging.error(f"Error fetching collaborators: {e}")
             return {'message': 'Internal server error'}, 500
