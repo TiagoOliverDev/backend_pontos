@@ -10,7 +10,7 @@ class JourneyRepository():
         try:
             with db.connect("journey_exists") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT tipo FROM turno_teste WHERE tipo = %s"
+                    query = "SELECT tipo FROM turno WHERE tipo = %s"
                     cursor.execute(query, (tipo,))
                     journey = cursor.fetchone()
                     return journey[0] if journey else None
@@ -22,7 +22,7 @@ class JourneyRepository():
         try:
             with db.connect("journey_edit") as conn:
                 with conn.cursor() as cursor:
-                    query = "UPDATE turno_teste SET tipo = %s WHERE id_turno = %s"
+                    query = "UPDATE turno SET tipo = %s WHERE id_turno = %s"
                     cursor.execute(query, (new_name, id))
                     conn.commit()  
                     return True
@@ -34,7 +34,7 @@ class JourneyRepository():
         try:
             with db.connect("journey_create") as conn:
                 with conn.cursor() as cursor:
-                    query = "INSERT INTO turno_teste (tipo) VALUES (%s) RETURNING id_turno"
+                    query = "INSERT INTO turno (tipo) VALUES (%s) RETURNING id_turno"
                     cursor.execute(query, (tipo,))
                     new_journey_id = cursor.fetchone()[0]
                     conn.commit()  
@@ -47,7 +47,7 @@ class JourneyRepository():
         try:
             with db.connect("journey_delete") as conn:
                 with conn.cursor() as cursor:
-                    query = "DELETE FROM turno_teste WHERE id_turno = %s"
+                    query = "DELETE FROM turno WHERE id_turno = %s"
                     cursor.execute(query, (id,))
                     conn.commit()  
                     return True
@@ -59,9 +59,13 @@ class JourneyRepository():
         try:
             with db.connect("list_all_journeys") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT id_turno, tipo FROM turno_teste"
+                    query = "SELECT id_turno, tipo FROM turno"
                     cursor.execute(query)
-                    journeys = cursor.fetchall()
+                    journeys_tuples = cursor.fetchall()
+                    journeys = [
+                        {"id": sector[0], "tipo": sector[1]}
+                        for sector in journeys_tuples if sector
+                    ]
                     return journeys
         except psycopg2.Error as e:
             logging.error(f"Erro ao listar os turnos: {e}")
@@ -71,7 +75,7 @@ class JourneyRepository():
         try:
             with db.connect("list_journey_by_id") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT id_turno, tipo FROM turno_teste WHERE id_turno = %s"
+                    query = "SELECT id_turno, tipo FROM turno WHERE id_turno = %s"
                     cursor.execute(query, (id,))
                     journey = cursor.fetchone()
                     return journey, None
