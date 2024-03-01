@@ -2,6 +2,7 @@ from flask import request, jsonify, Blueprint
 from ..repositories.point_repository import PointRepository
 from ..services.point_service import PointService
 from .validated_token import token_required
+from datetime import datetime
 import os
 
 
@@ -26,11 +27,14 @@ def all_points_from_user(current_user, id):
 @token_required
 def create_point(current_user):
     data = request.get_json()
+    print(data)
     id_usuario = data['id_usuario']
     id_tipo_ponto = data['id_tipo_ponto']
-    data_hora = data['data_hora']
+
+    current_datetime = datetime.now()
+    data_hora = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
     
-    if not all([id_usuario, id_tipo_ponto, data_hora]):
+    if not all([id_usuario, id_tipo_ponto]):
         return jsonify({'message': 'Fields are required'}), 400
 
     point, error = point_service.create_user_point(id_usuario=id_usuario, id_tipo_ponto=id_tipo_ponto, data_hora=data_hora)

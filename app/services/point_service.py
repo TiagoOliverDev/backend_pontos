@@ -24,7 +24,7 @@ class PointService:
             points = point_repository.list_points_from_user(id_usuario=id_usuario)
             if points is None:
                 return {'message': 'Error fetching points'}, 500
-            return {'points': points}, 200
+            return points, 200
         except Exception as e:
             logging.error(f"Error fetching points: {e}")
             return {'message': 'Internal server error'}, 500
