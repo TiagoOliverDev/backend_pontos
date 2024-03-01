@@ -5,7 +5,9 @@ from flask_cors import CORS
 import os
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
 
 # Carregar configuração com base no ambiente
 if os.environ.get('FLASK_ENV') == 'production':
