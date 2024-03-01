@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from app.routes import routes_blueprint
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 # Carregar configuração com base no ambiente
 if os.environ.get('FLASK_ENV') == 'production':
