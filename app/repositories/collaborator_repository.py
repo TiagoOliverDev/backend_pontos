@@ -133,8 +133,9 @@ class CollaboratorRepository():
                         SELECT 
                             u.id_usuario, 
                             u.nome, 
-                            u.email, 
                             u.matricula,
+                            u.email, 
+                            u.senha,
                             (SELECT t.tipo FROM turno t WHERE t.id_turno = ut.id_turno) as tipo_turno,
                             (SELECT s.nome FROM setor s WHERE s.id_setor = us.id_setor) as nome_setor
                         FROM 
@@ -150,10 +151,11 @@ class CollaboratorRepository():
                         {
                             "id": collaborator[0],
                             "nomeCompleto": collaborator[1],
-                            "email": collaborator[2],
-                            "matricula": collaborator[3],
-                            "turno": collaborator[4],
-                            "setor": collaborator[5]
+                            "matricula": collaborator[2],
+                            "email": collaborator[3],
+                            "senha": collaborator[4],
+                            "turno": collaborator[5],
+                            "setor": collaborator[6]
                         }
                         for collaborator in collaborator_tuples if collaborator
                     ]
