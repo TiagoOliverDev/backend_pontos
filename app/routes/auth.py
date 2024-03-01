@@ -44,7 +44,7 @@ def register():
     
     name = data['name']
     email = data['email']
-    password = data['password']
+    password = data['senha']
     matricula = data['matricula']
     tipo_permissao = data['tipo_permissao']
 

@@ -16,7 +16,7 @@ class JourneyService:
             journeys = journey_repository.list_all_journeys()
             if journeys is None:
                 return {'message': 'Error fetching journeys'}, 500
-            return {'journeys': journeys}, 200
+            return journeys, 200
         except Exception as e:
             logging.error(f"Error fetching journeys: {e}")
             return {'message': 'Internal server error'}, 500
