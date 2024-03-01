@@ -10,6 +10,18 @@ Register
 Login
 ![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/login.png)
 
+Collaborated created
+![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/colaboradorCreated.png)
+
+List all Collaborators
+![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/list_all_colaborator.png)
+
+Type points
+![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/typesPontos.png)
+
+Register points
+![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/registerPoint.png)
+
 
 <hr/>
 
