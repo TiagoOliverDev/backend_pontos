@@ -18,6 +18,7 @@ def login():
 
     email = auth_data['email']
     password = auth_data['password']
+    id_user = auth_repository.get_id_user(email=email)
 
     if not email or not password:
         return jsonify({'message': 'Email and password are required'}), 400
@@ -34,7 +35,7 @@ def login():
     if isinstance(token, bytes):
         token = token.decode('utf-8')
 
-    return jsonify({'BearerToken': token}), 200
+    return jsonify({'id_user': id_user, 'BearerToken': token}), 200
 
 
 @auth_blueprint.route('/register', methods=['POST'])
