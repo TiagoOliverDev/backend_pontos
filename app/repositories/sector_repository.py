@@ -59,9 +59,13 @@ class SectorRepository():
         try:
             with db.connect("list_all_sectors") as conn:
                 with conn.cursor() as cursor:
-                    query = "SELECT id_setor, nome FROM setor"
+                    query = "SELECT id_setor, nome, created_at, updated_at FROM setor ORDER BY id_setor"
                     cursor.execute(query)
-                    sectors = cursor.fetchall()
+                    sector_tuples = cursor.fetchall()
+                    sectors = [
+                        {"id": sector[0], "nomeSetor": sector[1], "created_at": sector[2].strftime("%a, %d %b %Y %H:%M:%S GMT"), "updated_at": sector[3].strftime("%a, %d %b %Y %H:%M:%S GMT")}
+                        for sector in sector_tuples if sector
+                    ]
                     return sectors
         except psycopg2.Error as e:
             logging.error(f"Erro ao listar os setores: {e}")
@@ -73,7 +77,11 @@ class SectorRepository():
                 with conn.cursor() as cursor:
                     query = "SELECT id_setor, nome FROM setor WHERE id_setor = %s"
                     cursor.execute(query, (id,))
-                    sector = cursor.fetchone()
+                    sector_tuple = cursor.fetchone()
+                    if sector_tuple:
+                        sector = {"id": sector_tuple[0], "nomeSetor": sector_tuple[1]}
+                    else:
+                        sector = None
                     return sector, None
         except psycopg2.Error as e:
             logging.error(f"Error listing sector by id: {e}")

@@ -24,10 +24,12 @@ def list_all_sectors(current_user):
 
 
 @sector_blueprint.route('/register_sector', methods=['POST'])
-@token_required
-def register_sector(current_user):
+# @token_required
+def register_sector():
     data = request.get_json()
-    name = data['name']
+    name = data['nomeSetor']
+
+    print('name:', name)
 
     if not all([name]):
         return jsonify({'message': 'Field is required'}), 400
@@ -49,14 +51,14 @@ def sector(current_user, id):
         if not sector:
             return jsonify({'message': 'Sector not found'}), 404
         
-        return jsonify({'sector': sector}), 200
+        return jsonify({'sector': [sector] if sector else [None]}), 200
 
     elif request.method == 'PUT':
         data = request.get_json()
-        if 'name' not in data:
-            return jsonify({'message': 'Name is required'}), 400
+        if 'nomeSetor' not in data:
+            return jsonify({'message': 'nomeSetor is required'}), 400
 
-        name = data['name']
+        name = data['nomeSetor']
 
         updated_sector, error = sector_service.update_sector(id=id, name=name)
         if error:

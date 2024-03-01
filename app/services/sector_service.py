@@ -15,11 +15,25 @@ class SectorService:
         try:
             sectors = sector_repository.list_all_sectors()
             if sectors is None:
-                return {'message': 'Error fetching sectors'}, 500
-            return {'sectors': sectors}, 200
+                return None, 'Error fetching sectors'
+            # formatted_sectors = self.format_sectors_all(sectors)
+            # return formatted_sectors, None
+            return sectors, None
         except Exception as e:
             logging.error(f"Error fetching sectors: {e}")
-            return {'message': 'Internal server error'}, 500
+            return None, 'Internal server error'
+
+    def format_sectors_all(self, sectors):
+        formatted_sectors = []
+        for sector in sectors:
+            formatted_sector = {
+                "id": sector[0],
+                "nomeSetor": sector[1],
+                "created_at": sector[2].strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                "updated_at": sector[3].strftime("%a, %d %b %Y %H:%M:%S GMT")
+            }
+            formatted_sectors.append(formatted_sector)
+        return formatted_sectors
         
     def register_sector(self, name: str):
         try:
@@ -34,7 +48,7 @@ class SectorService:
     
     def list_sector_by_id(self, id: int):
         try:
-            sector = sector_repository.list_sector_by_id(id=id)
+            sector, error = sector_repository.list_sector_by_id(id=id)
             return sector, None
         except Exception as e:
             logging.error(f"Error list sector: {e}")
