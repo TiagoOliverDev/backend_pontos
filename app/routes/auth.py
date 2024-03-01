@@ -15,30 +15,32 @@ auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 @auth_blueprint.route('/login', methods=['POST'])
 def login():
     auth_data = request.get_json()
-    username = auth_data['username']
+
+    email = auth_data['email']
     password = auth_data['password']
 
-    if not username or not password:
-        return jsonify({'message': 'Username and password are required'}), 400
+    if not email or not password:
+        return jsonify({'message': 'Email and password are required'}), 400
 
-    if not auth_repository.user_exists(username):
+    if not auth_repository.email_user_exists(email):
         return jsonify({'message': 'User does not exist'}), 401
 
-    stored_password = auth_repository.get_user_password(username)
+    stored_password = auth_repository.get_user_password(email)
     if not auth_service.verify_password(stored_password, password):
         return jsonify({'message': 'Invalid password'}), 401
 
-    token = auth_service.generate_token(username)
+    token = auth_service.generate_token(email)
     
     if isinstance(token, bytes):
         token = token.decode('utf-8')
 
-    return jsonify({'token': token}), 200
+    return jsonify({'BearerToken': token}), 200
 
 
 @auth_blueprint.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
+    
     name = data['name']
     email = data['email']
     password = data['password']

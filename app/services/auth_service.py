@@ -12,15 +12,15 @@ class AuthService:
     def verify_password(self, stored_password, provided_password):
         return bcrypt.verify(provided_password, stored_password)
 
-    def generate_token(self, username):
-        payload = {'username': username}
+    def generate_token(self, email: str):
+        payload = {'email': email}
         token = jwt.encode(payload, self.secret_key, algorithm='HS256')
         return token
 
     def decode_token(self, token):
         try:
             payload = jwt.decode(token, self.secret_key, algorithms=['HS256'])
-            return payload['username']
+            return payload['email']
         except jwt.ExpiredSignatureError:
             return 'Token expired. Please log in again.'
         except jwt.InvalidTokenError:
