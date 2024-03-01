@@ -2,12 +2,11 @@ from flask import Flask, request, jsonify, Blueprint
 from ..repositories.auth_repository import AuthRepository
 from ..services.auth_service import AuthService
 from flask_bcrypt import Bcrypt
+import os
 
-# app = Flask(__name__)
-# app.config['SECRET_KEY'] = '9ba263503b01ce2ef81f6641f504b45333aa0662183d0184db79d9e92ccef620'
-# bcrypt = Bcrypt(app)
-# auth_service = AuthService(app.config['SECRET_KEY'])
-auth_service = AuthService('9ba263503b01ce2ef81f6641f504b45333aa0662183d0184db79d9e92ccef620')
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+auth_service = AuthService(SECRET_KEY)
 auth_repository = AuthRepository()
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")

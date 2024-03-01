@@ -32,7 +32,7 @@ def register_collaborator(current_user):
     senha = data['senha']
     matricula = data['matricula']
     # tipo_permissao = data['tipo_permissao']
-    tipo_permissao = 1
+    tipo_permissao = 1 # Tipo para user comum
 
     if not all([name, email, senha, matricula, tipo_permissao]):
         return jsonify({'message': 'All fields are required'}), 400

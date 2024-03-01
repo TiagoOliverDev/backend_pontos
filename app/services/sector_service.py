@@ -16,8 +16,6 @@ class SectorService:
             sectors = sector_repository.list_all_sectors()
             if sectors is None:
                 return None, 'Error fetching sectors'
-            # formatted_sectors = self.format_sectors_all(sectors)
-            # return formatted_sectors, None
             return sectors, None
         except Exception as e:
             logging.error(f"Error fetching sectors: {e}")

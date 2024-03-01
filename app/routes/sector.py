@@ -24,8 +24,8 @@ def list_all_sectors(current_user):
 
 
 @sector_blueprint.route('/register_sector', methods=['POST'])
-# @token_required
-def register_sector():
+@token_required
+def register_sector(current_user):
     data = request.get_json()
     name = data['nomeSetor']
 
