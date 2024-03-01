@@ -84,6 +84,18 @@ Open folder project and open a terminal and run the following command:
 
 ```bash
 python server.py
+
+
+
+## OBS: 
+
+I had the idea of ​​creating a type of dashboard for the admin user to monitor who is on pause, working but I didn't have time to continue.
+
+I also had the idea of ​​creating the History menu where the user can download their points history and the admin user can download the history of all users but I didn't have time to finish it either.
+
+The project is cool but not complete, but I tried to follow a good code and architecture standard.
+
+
 ```
 
 
