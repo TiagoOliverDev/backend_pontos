@@ -87,4 +87,17 @@ class SectorRepository():
             logging.error(f"Error listing sector by id: {e}")
             return None, 'Error listing sector by id. Please try again later.'
         
+    def set_sector(self, id_setor: int, id_usuario: int):
+        try:
+            with db.connect("set_sector") as conn:
+                with conn.cursor() as cursor:
+                    query = "INSERT INTO usuario_setor (id_setor, id_usuario) VALUES (%s, %s) RETURNING id_vinculo_setor"
+                    cursor.execute(query, (id_setor, id_usuario))
+                    new_journey_id = cursor.fetchone()[0]
+                    conn.commit()  
+                    return new_journey_id
+        except psycopg2.Error as e:
+            logging.error(f"Erro ao cadastrar o setor: {e}")
+            return None
+
 

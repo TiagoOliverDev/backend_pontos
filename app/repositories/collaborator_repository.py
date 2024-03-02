@@ -40,7 +40,7 @@ class CollaboratorRepository():
                     query = """
                         INSERT INTO usuario (nome, email, senha, matricula, tipo_permissao)
                         VALUES (%s, %s, %s, %s, %s)
-                        RETURNING *
+                        RETURNING id_usuario
                     """
                     cursor.execute(query, (name, email, hashed_password, matricula, tipo_permissao))
                     user = cursor.fetchone()
@@ -105,7 +105,8 @@ class CollaboratorRepository():
                         LEFT JOIN 
                             usuario_turno ut ON u.id_usuario = ut.id_usuario
                         LEFT JOIN 
-                            usuario_setor us ON u.id_usuario = us.id_usuario;
+                            usuario_setor us ON u.id_usuario = us.id_usuario
+                        order by u.id_usuario;
                     """
                     cursor.execute(query)
                     collaborator_tuples = cursor.fetchall()

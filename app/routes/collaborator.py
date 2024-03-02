@@ -27,17 +27,23 @@ def list_all_collaborators(current_user):
 @token_required
 def register_collaborator(current_user):
     data = request.get_json()
+
     name = data['nomeCompleto']
     email = data['email']
     senha = data['senha']
     matricula = data['matricula']
-    # tipo_permissao = data['tipo_permissao']
+    turno = data['turno']
+    setor = data['setor']
     tipo_permissao = 1 # Tipo para user comum
+    # tipo_permissao = data['tipo_permissao']
 
     if not all([name, email, senha, matricula, tipo_permissao]):
         return jsonify({'message': 'All fields are required'}), 400
 
     user, error = collaborator_service.register_collaborator(name, email, senha, matricula, tipo_permissao)
+
+    id_new_user = user[0]
+    set_sector_and_journey = collaborator_service.set_journey_sector_in_collaborator(id_usuario=id_new_user, id_setor=setor, id_turno=turno)
     if error:
         return jsonify({'message': error}), 400
 

@@ -1,8 +1,15 @@
 from ..repositories.collaborator_repository import CollaboratorRepository
+from .journey_service import JourneyService
+from .sector_service import SectorService
 import logging
+import os
 
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 collaborator_repository = CollaboratorRepository()
+journey_service = JourneyService(SECRET_KEY)
+sector_service = SectorService(SECRET_KEY)
 
 class CollaboratorService:
     def __init__(self, secret_key):
@@ -55,4 +62,20 @@ class CollaboratorService:
         except Exception as e:
             logging.error(f"Error in excluded collaborator: {e}")
             return None, 'Error in excluded collaborator. Please try again later.'
+        
+    def set_journey_sector_in_collaborator(self, id_usuario: int, id_setor: int = None, id_turno: int = None):
+        try:
+
+            if id_setor != None:
+                sector_service.set_sector(id_setor=id_setor, id_usuario=id_usuario)
+
+            if id_turno != None:
+                journey_service.set_jorney(id_turno=id_turno, id_usuario=id_usuario)
+
+            return sector_service, journey_service, None
+        except Exception as e:
+            logging.error(f"Error registering collaborator: {e}")
+            return None, 'Error registering collaborator. Please try again later.'
+        
+    
 

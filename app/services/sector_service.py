@@ -68,3 +68,10 @@ class SectorService:
             logging.error(f"Error in excluded sector: {e}")
             return None, 'Error in excluded sector. Please try again later.'
 
+    def set_sector(self, id_setor: int, id_usuario: int):
+        try:
+            set_journey = sector_repository.set_sector(id_setor=id_setor, id_usuario=id_usuario)
+            return set_journey, None
+        except Exception as e:
+            logging.error(f"Error in set journey: {e}")
+            return None, 'Error in set journey. Please try again later.'
