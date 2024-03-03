@@ -80,7 +80,7 @@ class CollaboratorRepository():
         try:
             with db.connect("collaborator_delete") as conn:
                 with conn.cursor() as cursor:
-                    query = "DELETE FROM usuario WHERE id_usuario = %s"
+                    query = "UPDATE usuario SET status = FALSE WHERE id_usuario = %s;"
                     cursor.execute(query, (id,))
                     conn.commit()  
                     return True
@@ -98,6 +98,7 @@ class CollaboratorRepository():
                             u.nome, 
                             u.email, 
                             u.matricula,
+                            u.status,
                             (SELECT t.tipo FROM turno t WHERE t.id_turno = ut.id_turno) as tipo_turno,
                             (SELECT s.nome FROM setor s WHERE s.id_setor = us.id_setor) as nome_setor
                         FROM 
@@ -106,7 +107,8 @@ class CollaboratorRepository():
                             usuario_turno ut ON u.id_usuario = ut.id_usuario
                         LEFT JOIN 
                             usuario_setor us ON u.id_usuario = us.id_usuario
-                        order by u.id_usuario;
+                        WHERE u.status = true
+                        ORDER BY u.id_usuario;
                     """
                     cursor.execute(query)
                     collaborator_tuples = cursor.fetchall()
