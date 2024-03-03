@@ -118,8 +118,8 @@ class CollaboratorRepository():
                             "nome": collaborator[1],
                             "email": collaborator[2],
                             "matricula": collaborator[3],
-                            "turno": collaborator[4],
-                            "setor": collaborator[5]
+                            "turno": collaborator[5],
+                            "setor": collaborator[6]
                         }
                         for collaborator in collaborator_tuples if collaborator
                     ]
