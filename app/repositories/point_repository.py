@@ -44,7 +44,7 @@ class PointRepository():
                     point_tuples = cursor.fetchall()
                     points = [
                         {
-                            "dataHora": point[0].strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                            "dataHora": point[0].strftime("%d %b %Y / %H:%M:%S"),
                             "nome": point[1],
                             "tipoPonto": point[2],
                             "idTipoPonto": point[3]

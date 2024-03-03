@@ -54,7 +54,7 @@ class SectorRepository():
         except psycopg2.Error as e:
             logging.error(f"Erro ao excluir o setor: {e}")
             return False
-        
+
     def list_all_sectors(self):
         try:
             with db.connect("list_all_sectors") as conn:
@@ -63,7 +63,7 @@ class SectorRepository():
                     cursor.execute(query)
                     sector_tuples = cursor.fetchall()
                     sectors = [
-                        {"id": sector[0], "nomeSetor": sector[1], "created_at": sector[2].strftime("%a, %d %b %Y %H:%M:%S GMT"), "updated_at": sector[3].strftime("%a, %d %b %Y %H:%M:%S GMT")}
+                        {"id": sector[0], "nomeSetor": sector[1], "created_at": sector[2].strftime("%d %b %Y / %H:%M:%S"), "updated_at": sector[3].strftime("%d %b %Y / %H:%M:%S"),}
                         for sector in sector_tuples if sector
                     ]
                     return sectors
