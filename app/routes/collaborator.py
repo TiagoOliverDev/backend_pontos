@@ -28,7 +28,7 @@ def list_all_collaborators(current_user):
 def register_collaborator(current_user):
     data = request.get_json()
 
-    name = data['nomeCompleto']
+    name = data['nome']
     email = data['email']
     senha = data['senha']
     matricula = data['matricula']
@@ -64,7 +64,10 @@ def collaborator(current_user, id):
 
     elif request.method == 'PUT':
         data = request.get_json()
-
+        data.pop('id', None)    # desativar esse código para testes fora da interface
+        data.pop('setor', None) # desativar esse código para testes fora da interface
+        data.pop('turno', None) # desativar esse código para testes fora da interface
+        
         updated_collaborator, error = collaborator_service.collaborator_update(id=id, **data)
         
         if error:

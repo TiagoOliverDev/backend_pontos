@@ -51,7 +51,7 @@ class CollaboratorRepository():
         
     def update_collaborator(self, id: int, **kwargs):
         # Extrai os campos atualizáveis do dicionário kwargs
-        update_fields = {key: value for key, value in kwargs.items() if key in ['nome', 'email', 'senha', 'matricula', 'tipo_permissao']}
+        update_fields = {key: value for key, value in kwargs.items() if key in ['nome', 'email', 'senha', 'matricula']}
 
         if 'senha' in update_fields:
             update_fields['senha'] = bcrypt.hash(update_fields['senha'])
@@ -113,7 +113,7 @@ class CollaboratorRepository():
                     collaborators = [
                         {
                             "id": collaborator[0],
-                            "nomeCompleto": collaborator[1],
+                            "nome": collaborator[1],
                             "email": collaborator[2],
                             "matricula": collaborator[3],
                             "turno": collaborator[4],
