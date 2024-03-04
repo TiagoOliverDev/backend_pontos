@@ -2,6 +2,7 @@ from flask import request, jsonify, Blueprint
 from ..repositories.sector_repository import SectorRepository
 from ..services.sector_service import SectorService
 from .validated_token import token_required
+from flask_cors import CORS, cross_origin
 import os
 
 
@@ -13,6 +14,13 @@ sector_repository = SectorRepository()
 sector_blueprint = Blueprint("sector", __name__, url_prefix="/sector")
 
 
+def _build_cors_preflight_response():
+    response = jsonify({'status': 'ok'})       
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "*")  # Permitir todos os cabeçalhos
+    response.headers.add("Access-Control-Allow-Methods", "*")  # Permitir todos os métodos
+    return response
+
 @sector_blueprint.route('/list_all_sectors', methods=['GET'])
 @token_required
 def list_all_sectors(current_user):
@@ -23,22 +31,26 @@ def list_all_sectors(current_user):
     return jsonify({'sectors': sectors}), 200
 
 
-@sector_blueprint.route('/register_sector', methods=['POST'])
-@token_required
-def register_sector(current_user):
-    data = request.get_json()
-    name = data['nomeSetor']
+@sector_blueprint.route('/register_sector', methods=['POST', 'OPTIONS'])
+# @token_required
+@cross_origin(origin='*', headers=['Content-Type', 'Authorization']) 
+def register_sector():
 
-    print('name:', name)
+    if request.method == 'OPTIONS':
+        return _build_cors_preflight_response()
+    
+    if request.method == 'POST':
+        data = request.get_json()
+        name = data['nomeSetor']
 
-    if not all([name]):
-        return jsonify({'message': 'Field is required'}), 400
+        if not all([name]):
+            return jsonify({'message': 'Field is required'}), 400
 
-    sector, error = sector_service.register_sector(name=name)
-    if error:
-        return jsonify({'message': error}), 400
+        sector, error = sector_service.register_sector(name=name)
+        if error:
+            return jsonify({'message': error}), 400
 
-    return jsonify({'sector': sector, 'message': 'Sector created successfully'}), 201
+        return jsonify({'sector': sector, 'message': 'Sector created successfully'}), 201
 
 
 @sector_blueprint.route('/sector/<int:id>', methods=['GET', 'PUT', 'DELETE'])
