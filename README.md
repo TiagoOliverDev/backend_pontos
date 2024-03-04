@@ -94,10 +94,6 @@ I also had the idea of ​​creating the History menu where the user can downlo
 
 The project is cool but not complete, but I tried to follow a good code and architecture standard.
 
-
-```
-
-
 <hr/>
 
 
