@@ -32,8 +32,7 @@ class AuthRepository():
         except psycopg2.Error as e:
             logging.error(f"Erro ao verificar se o usuário existe: {e}")
             return None
-        
-            
+               
     def get_id_user(self, email: str):
         try:
             with db.connect("get_id_user") as conn:
@@ -42,6 +41,18 @@ class AuthRepository():
                     cursor.execute(query, (email,))
                     user = cursor.fetchone()
                     return user[0] if user else None
+        except psycopg2.Error as e:
+            logging.error(f"Erro ao verificar se o usuário existe: {e}")
+            return None
+    
+    def get_type_permission_user(self, email: str):
+        try:
+            with db.connect("get_type_permission_user") as conn:
+                with conn.cursor() as cursor:
+                    query = "SELECT u.tipo_permissao FROM usuario u WHERE email = %s"
+                    cursor.execute(query, (email,))
+                    permission = cursor.fetchone()
+                    return permission[0] if permission else None
         except psycopg2.Error as e:
             logging.error(f"Erro ao verificar se o usuário existe: {e}")
             return None

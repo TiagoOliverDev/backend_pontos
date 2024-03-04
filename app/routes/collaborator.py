@@ -34,7 +34,7 @@ def register_collaborator(current_user):
     matricula = data['matricula']
     turno = data['turno']
     setor = data['setor']
-    tipo_permissao = 1 # Tipo para user comum
+    tipo_permissao = 1 # Tipo para usuário comum
     # tipo_permissao = data['tipo_permissao']
 
     if not all([name, email, senha, matricula, tipo_permissao]):

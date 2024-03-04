@@ -18,6 +18,7 @@ def login():
     email = auth_data['email']
     password = auth_data['password']
     id_user = auth_repository.get_id_user(email=email)
+    type_permission = auth_repository.get_type_permission_user(email=email)
 
     if not email or not password:
         return jsonify({'message': 'Email and password are required'}), 400
@@ -34,7 +35,7 @@ def login():
     if isinstance(token, bytes):
         token = token.decode('utf-8')
 
-    return jsonify({'id_user': id_user, 'BearerToken': token}), 200
+    return jsonify({'id_user': id_user, 'BearerToken': token, 'type_permission': type_permission}), 200
 
 
 @auth_blueprint.route('/register', methods=['POST'])
@@ -45,7 +46,8 @@ def register():
     email = data['email']
     password = data['senha']
     matricula = data['matricula']
-    tipo_permissao = data['tipo_permissao']
+    tipo_permissao = 2 # 2 = usuário admin
+    # tipo_permissao = data['tipo_permissao']
 
     if not all([name, email, password, matricula, tipo_permissao]):
         return jsonify({'message': 'All fields are required'}), 400

@@ -107,7 +107,7 @@ class CollaboratorRepository():
                             usuario_turno ut ON u.id_usuario = ut.id_usuario
                         LEFT JOIN 
                             usuario_setor us ON u.id_usuario = us.id_usuario
-                        WHERE u.status = true
+                        WHERE u.status = true and u.tipo_permissao = 1
                         ORDER BY u.id_usuario;
                     """
                     cursor.execute(query)
