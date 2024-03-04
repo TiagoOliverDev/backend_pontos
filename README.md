@@ -31,7 +31,7 @@ Register points
 - Registration and listing of sectors
 - Registration and listing of collaborators
 - Options to clock in at different times (entry, lunch, return and end of work)
-- History (under development)
+- Points history 
 - Dashboard (under development)
 
 <hr/>
@@ -57,18 +57,14 @@ I used the following technologies:
 - Choose a folder in your local machine where you want this repository to be copied
 
 - Clone this [repository](git@github.com:TiagoOliverDev/backend_pontos.git) to your local machine 
-- ```
+
+  ```
   git clone git@github.com:TiagoOliverDev/backend_pontos.git
   ```
 
 - Navigate to `cd backend_pontos`  directory.
 
-- To install all the app dependencies on the command line run
-- ```
- steps...
-
-  ``` 
-## Step 1: 
+## Step 2: 
 
  python -m venv nome_da_env
 
@@ -77,12 +73,12 @@ I used the following technologies:
  pip install -r requirements.txt
 
 
-## Step 2: 
+## Step 3: 
 
 After that, go to .env and set the DB credentials and choose to run production or development
 
 
-## Step 3: Run the project
+## Step 4: Run the project
 
 Open folder project and open a terminal and run the following command:
 

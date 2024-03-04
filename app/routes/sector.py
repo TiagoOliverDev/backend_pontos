@@ -3,6 +3,7 @@ from ..repositories.sector_repository import SectorRepository
 from ..services.sector_service import SectorService
 from .validated_token import token_required
 from flask_cors import CORS, cross_origin
+from .cors_preflight_response import CorsOptions
 import os
 
 
@@ -12,14 +13,8 @@ sector_service = SectorService(SECRET_KEY)
 sector_repository = SectorRepository()
 
 sector_blueprint = Blueprint("sector", __name__, url_prefix="/sector")
+cors_options = CorsOptions()
 
-
-def _build_cors_preflight_response():
-    response = jsonify({'status': 'ok'})       
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Headers", "*")  # Permitir todos os cabeçalhos
-    response.headers.add("Access-Control-Allow-Methods", "*")  # Permitir todos os métodos
-    return response
 
 @sector_blueprint.route('/list_all_sectors', methods=['GET'])
 @token_required
@@ -37,7 +32,7 @@ def list_all_sectors(current_user):
 def register_sector():
 
     if request.method == 'OPTIONS':
-        return _build_cors_preflight_response()
+        return cors_options._build_cors_preflight_response()
     
     if request.method == 'POST':
         data = request.get_json()
