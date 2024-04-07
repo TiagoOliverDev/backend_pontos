@@ -3,6 +3,7 @@ from passlib.hash import bcrypt
 from ..repositories.auth_repository import AuthRepository
 import jwt
 
+
 auth_repository = AuthRepository()
 
 class AuthService:
@@ -14,8 +15,15 @@ class AuthService:
 
     def generate_token(self, email: str):
         payload = {'email': email}
-        token = jwt.encode(payload, self.secret_key, algorithm='HS256')
-        return token
+        try:
+            token = jwt.encode(payload, self.secret_key, algorithm='HS256')
+            return token
+        except AttributeError as e:
+            print(f"Erro ao tentar codificar o token: {e}")
+            return None
+        except Exception as e:
+            print(f"Erro inesperado ao gerar o token: {e}")
+            return None
 
     def decode_token(self, token):
         try:
